@@ -5,6 +5,31 @@
 
 long id;
 
+byte simpl_uuid[32];
+
+
+
+void pretty_uuid()
+{
+  char b[8];
+
+  memset(b, 0, 8);
+  memset(simpl_uuid, 0, 32);
+
+  snprintf(b, 8, "%lX",(long)EEPROM.read(0));  //read a single byte from EEPROM, interpret as ul (4 bytes), write to b
+  strcpy((char*)simpl_uuid, b);               //copy b into simpl_uuid
+  memset(b, 0, 8);                             //clear b
+  snprintf(b, 8, "%lX",(long)EEPROM.read(1));  //read a single byte from EEPROM, interpret as ul (4 bytes), write to b
+  strcat((char*)simpl_uuid, b);               //concat b onto simpl_uuid
+  memset(b, 0, 8);                             //clear b
+  snprintf(b, 8, "%lX",(long)EEPROM.read(2));  //read a single byte from EEPROM, interpret as ul (4 bytes), write to b
+  strcat((char*)simpl_uuid, b);               //concat b onto simpl_uuid
+  memset(b, 0, 8);                             //clear b
+  snprintf(b, 8, "%lX",(long)EEPROM.read(3));  //read a single byte from EEPROM, interpret as ul (4 bytes), write to b
+  strcat((char*)simpl_uuid, b);               //concat b onto simpl_uuid
+} 
+
+
 
 void setup()
 {
@@ -25,16 +50,18 @@ void setup()
      EEPROM.write(7, notunitId     & 0xFF);
 
     Serial.print("Generated new unitId: ");
-    Serial.print(unitId, HEX);
+    pretty_uuid();
+    Serial.print((char *)(simpl_uuid));
   
   Serial.println();
   // Ethernet.begin(mac, ip);
   
 }
 
+
   void loop()
   {
-    //
+   // exit(0);
   
   }
 
